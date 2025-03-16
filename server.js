@@ -5,7 +5,6 @@ const TableRoute = require('./app/routes/foodtable.route')
 const OrderRoute = require('./app/routes/order.route')
 const genQR = require('./app/routes/qrcode.route')
 const app = express();
-const PORT = 8000;
 const cors = require('cors');
 
 app.use(cors()); 
@@ -15,16 +14,20 @@ app.use('/table',TableRoute)
 app.use('/order',OrderRoute)
 app.use('/qrcode',genQR)
 
-// Sync database and start server
-sequelize.sync()
+
+
+sequelize
+  .authenticate()
   .then(() => {
-    app.listen(PORT, () => {
-      console.log(`Server is running on port ${PORT}`);
-    });
+    console.log("Connection to Supabase PostgreSQL database has been established successfully.");
   })
-  .catch(err => {
-    console.error('Unable to connect to the database:', err);
+  .catch((error) => {
+    console.error("Unable to connect to the database:", error);
   });
 
- 
+PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`);
+  }
+)
   
