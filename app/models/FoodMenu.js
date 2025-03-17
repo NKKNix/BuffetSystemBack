@@ -14,7 +14,7 @@ const FoodMenu = sequelize.define("FoodMenu",{
         type: DataTypes.TEXT,
         allowNull: false
     },
-    Available:{
+    available:{
         type: DataTypes.BOOLEAN,
         defaultValue: true
     }
