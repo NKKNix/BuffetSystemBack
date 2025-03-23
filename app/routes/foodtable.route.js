@@ -1,12 +1,13 @@
 const express = require("express")
 const router = express.Router();
 const FoodTable = require('../models/FoodTable')
-
+const redis = require('../config/redis');
 
 router.post("/",async (req,res)=>{
     try{
         const table = await FoodTable.create(req.body)
         res.status(201).json(table)
+        await redis.del('tableList')
     }
     catch(err){
         res.status(400).json({error: err.message})
@@ -15,8 +16,13 @@ router.post("/",async (req,res)=>{
 
 router.get("/", async (req,res)=>{
     try{
-        const table = await FoodTable.findAll()
-        res.status(200).json(table)
+        const tableList = await FoodTable.findAll()
+        const cache = await redis.get('tableList');
+        if (cache) {
+            return res.json(JSON.parse(cache));
+        }
+        await redis.set('tableList', JSON.stringify(tableList), { EX: 600 });
+        res.status(200).json(tableList)
     }catch(err){
         res.status(400).json({error: err.message})
     }
@@ -28,6 +34,7 @@ router.put("/:id" ,async(req,res)=>{
         if (table){
             await table.update(req.body)
             res.status(200).json(table)
+            await redis.del('tableList')
         }
     }catch(err){
         res.status(400).json({error: err.message})
@@ -40,6 +47,7 @@ router.delete("/:id",async(req,res)=>{
         if(table){
             await table.destroy();
             res.status(204).send()
+            await redis.del('tableList')
         }else{
             res.status(404)
         }

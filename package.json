@@ -19,7 +19,10 @@
     "mysql2": "^3.11.0",
     "pg": "^8.14.0",
     "qrcode": "^1.5.4",
+    "redis": "^4.7.0",
     "sequelize": "^6.37.3",
-    "styled-components": "^6.1.12"
+    "styled-components": "^6.1.12",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
   }
 }

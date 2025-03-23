@@ -75,14 +75,14 @@ router.post('/', async (req, res) => {
 router.put('/orders/:id', async (req, res) => {
     try {
         const { id } = req.params;
-        const { tableId, orderDetails } = req.body;
+        const { tableId,status, orderDetails } = req.body;
 
         const order = await Order.findByPk(id);
         if (!order) {
             return res.status(404).json({ error: 'Order not found' });
         }
 
-        await order.update({ tableId });
+        await order.update({ tableId ,status});
 
         if (orderDetails && orderDetails.length > 0) {
             // Delete existing details
