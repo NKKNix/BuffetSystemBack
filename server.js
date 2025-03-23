@@ -18,7 +18,7 @@ app.use('/order',OrderRoute)
 app.use('/qrcode',genQR)
 
 app.get('/', (_, res) => {
-  res.send('Welcome to Buffet System api!')
+  res.send('Welcome to Buffet System api! <br>read docs here: <a href="/api-docs">/api-docs</a>');
 })
 
 

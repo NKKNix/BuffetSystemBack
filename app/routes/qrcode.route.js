@@ -9,7 +9,7 @@ router.get('/table/:id', async (req, res) => {
   try {
     const url = await FoodTable.findByPk(req.params.id);
     const qrCodeImage = await QRCode.toDataURL(`${TableURL}${url.id}`);
-    res.send(`<img src="${qrCodeImage}" alt="QR Code"/>`);
+    res.send({qrcode:`${qrCodeImage}`});
   } catch (err) {
     res.status(500).json({ error: "create qr error" });
   }
